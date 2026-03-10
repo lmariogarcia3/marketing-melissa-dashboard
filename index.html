@@ -542,7 +542,7 @@ tr.sp .bar-fill { background: var(--alert); }
           <td style="text-align:right" class="diff-neg">Sin créditos</td>
         </tr>
         <tr style="background:#FFFBEF">
-          <td><div class="cname"><span class="flag">🇺🇸</span>US / Canadá</div></td>
+          <td><div class="cname"><span class="flag">🇺🇸</span>Estados Unidos</div></td>
           <td style="text-align:right;font-size:12px;color:var(--ink-3);font-style:italic">No mapeado</td>
           <td style="text-align:right;font-size:15px;font-weight:700;color:#9A6C00">1,175</td>
           <td style="text-align:right;font-weight:700;color:#9A6C00">2.3%</td>
@@ -573,7 +573,7 @@ tr.sp .bar-fill { background: var(--alert); }
       <li><span class="rn">1</span><span><strong>Campo de código de país obligatorio en el formulario de registro.</strong> Es la solución de raíz. Sin este cambio, el 15% seguirá siendo inservible para campañas segmentadas.</span></li>
       <li><span class="rn">2</span><span><strong>Incluir Argentina en el plan de créditos.</strong> Es el 2.° mercado más grande. Asignar mínimo 8–10% del presupuesto.</span></li>
       <li><span class="rn">3</span><span><strong>Ajustar México a ~48–60% de créditos</strong> (actualmente 70%). La cifra exacta aumentará una vez que se implemente el código de país obligatorio y los contactos "desconocidos" queden correctamente segmentados.</span></li>
-      <li><span class="rn">4</span><span><strong>Asignar créditos a US / Canadá.</strong> Solo 2.3% del total, pero son contactos de alto poder adquisitivo. Considerar una partida pequeña pero dedicada.</span></li>
+      <li><span class="rn">4</span><span><strong>Asignar créditos a Estados Unidos.</strong> Solo 2.3% del total, pero son contactos de alto poder adquisitivo. Considerar una partida pequeña pero dedicada.</span></li>
       <li><span class="rn">5</span><span><strong>Perú + Ecuador superan la proyección</strong> (13.5% real vs 10% plan). Considerar aumentar su asignación a 12–14%.</span></li>
     </ul>
   </div>
@@ -593,7 +593,7 @@ const data = [
   {f:"🇵🇪",n:"Perú",        c:3637, p:7.05},
   {f:"🇪🇨",n:"Ecuador",     c:3333, p:6.46},
   {f:"🇧🇷",n:"Brasil",      c:1254, p:2.43},
-  {f:"🇺🇸",n:"US / Canadá", c:1175, p:2.28},
+  {f:"🇺🇸",n:"Estados Unidos", c:1175, p:2.28},
   {f:"🇨🇱",n:"Chile",       c:352,  p:0.68},
   {f:"🇻🇪",n:"Venezuela",   c:256,  p:0.50},
   {f:"🇬🇹",n:"Guatemala",   c:134,  p:0.26},
@@ -621,7 +621,7 @@ const tb = document.getElementById('tbody1');
 data.forEach((row,i)=>{
   const tr = document.createElement('tr');
   if(row.n==="México") tr.className="r1";
-  else if(row.n==="Argentina" || row.n==="Brasil" || row.n==="US / Canadá") tr.className="arg";
+  else if(row.n==="Argentina" || row.n==="Brasil" || row.n==="Estados Unidos") tr.className="arg";
   const bar = Math.max(2,(row.c/max*100)).toFixed(1);
   tr.innerHTML=`
     <td class="rank">${i+1}</td>
