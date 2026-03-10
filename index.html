@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reporte de Contactos · Marketing con Melissa</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --purple:   #5B2DB0;
+  --purple-m: #7B4FCF;
+  --purple-xl:#EDE6FA;
+  --ink:      #1A1423;
+  --ink-2:    #4A4157;
+  --ink-3:    #8C85A0;
+  --line:     #E8E3F2;
+  --bg:       #F7F5FC;
+  --white:    #FFFFFF;
+  --alert:    #C0392B;
+  --alert-bg: #FDF2F2;
+  --warn:     #B8540A;
+  --warn-bg:  #FEF6EE;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.sheet {
+  width: 900px;
+  margin: 0 auto;
+  background: var(--white);
+  padding: 52px 60px 60px;
+}
+
+.sheet + .sheet { margin-top: 24px; }
+
+/* ── TOP BAR ── */
+.top-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 10px;
+}
+
+.report-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 6px;
+}
+
+.report-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.15;
+}
+
+.report-sub {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-top: 3px;
+  font-weight: 400;
+}
+
+.total-block { text-align: right; }
+
+.total-block .big {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--purple);
+  letter-spacing: -0.02em;
+}
+
+.total-block .lbl {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 3px;
+}
+
+/* ── DISCLAIMER STRIP ── */
+.disclaimer {
+  background: #F3F0FB;
+  border: 1px solid #D5CCF0;
+  border-radius: 6px;
+  padding: 9px 14px;
+  margin: 12px 0 20px;
+  font-size: 11.5px;
+  color: var(--ink-2);
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.disclaimer-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* ── SECTION LABEL ── */
+.section-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 10px;
+}
+
+/* ── TABLE ── */
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 0 10px 9px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+thead th.r { text-align: right; }
+
+tbody tr { border-bottom: 1px solid var(--line); }
+tbody tr:hover { background: #FAF8FE; }
+
+tbody td { padding: 9px 10px; font-size: 13px; color: var(--ink); vertical-align: middle; }
+
+.rank { font-size: 11px; font-weight: 600; color: var(--ink-3); width: 26px; }
+
+.cname { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+.flag  { font-size: 16px; line-height: 1; }
+
+/* ── CONTACTS NUMBER ── */
+.num {
+  text-align: right;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* ── PCT CELL: bigger number + longer bar ── */
+.pct-td { text-align: right; width: 230px; }
+
+.pct-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.pct-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--purple-m);
+  min-width: 52px;
+  text-align: right;
+}
+
+.bar-bg {
+  width: 130px;
+  height: 6px;
+  background: var(--purple-xl);
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.bar-fill { height: 100%; border-radius: 3px; background: var(--purple-m); }
+
+/* highlights */
+tr.r1 .num   { color: var(--purple); font-size: 19px; }
+tr.r1 .pct-val { color: var(--purple); }
+tr.r1 .bar-fill { background: var(--purple); }
+tr.r1 .cname { font-weight: 700; }
+
+tr.arg td    { background: #FFFBEF; }
+tr.arg .num  { color: #9A6C00; }
+tr.arg .pct-val { color: #9A6C00; }
+tr.arg .bar-fill { background: #C89000; }
+tr.arg .cname { font-weight: 700; }
+
+tr.sp td     { color: var(--ink-3); }
+tr.sp .num   { font-size: 14px; color: var(--alert); }
+tr.sp .pct-val { font-size: 13px; color: var(--alert); }
+tr.sp .bar-fill { background: var(--alert); }
+
+.sp-divider td {
+  padding: 12px 10px 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  background: none;
+  border-bottom: 1px dashed var(--line);
+}
+
+/* footer */
+.footer {
+  margin-top: 36px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+/* ── PAGE 2 ── */
+.alert-block {
+  border-left: 4px solid var(--alert);
+  background: var(--alert-bg);
+  border-radius: 0 8px 8px 0;
+  padding: 18px 22px;
+  margin-bottom: 14px;
+}
+
+.warn-block {
+  border-left: 4px solid var(--warn);
+  background: var(--warn-bg);
+  border-radius: 0 8px 8px 0;
+  padding: 0;
+  margin-bottom: 28px;
+  display: flex;
+  gap: 0;
+}
+
+.warn-inner { padding: 18px 22px; flex: 1; }
+
+.alert-block .tag, .warn-block .tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; margin-bottom: 5px;
+}
+
+.alert-block .tag { color: var(--alert); }
+.warn-block  .tag { color: var(--warn); }
+
+.alert-block .headline, .warn-block .headline {
+  font-size: 16px; font-weight: 800; color: var(--ink);
+  margin-bottom: 5px; line-height: 1.3;
+}
+
+.alert-block .body, .warn-block .body {
+  font-size: 12.5px; color: var(--ink-2); line-height: 1.65;
+}
+
+.big-num-alert {
+  font-size: 34px; font-weight: 800; color: var(--alert);
+  letter-spacing: -0.02em; margin: 3px 0 5px;
+}
+.big-num-warn {
+  font-size: 34px; font-weight: 800; color: var(--warn);
+  letter-spacing: -0.02em; margin: 3px 0 5px;
+}
+
+/* ── PHONE INPUT MOCKUP ── */
+.phone-mockup-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 22px;
+  border-left: 1px solid #F5DFC0;
+  background: rgba(255,255,255,0.5);
+  border-radius: 0 8px 8px 0;
+  flex-shrink: 0;
+  width: 220px;
+}
+
+.phone-mockup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.phone-mockup-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--warn);
+  margin-bottom: 2px;
+}
+
+.phone-input-row {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #C89000;
+  border-radius: 7px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.flag-select {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 9px;
+  border-right: 1.5px solid #C89000;
+  background: #FFFBEF;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.flag-select .chevron {
+  font-size: 9px;
+  color: var(--ink-3);
+}
+
+.phone-digits {
+  padding: 7px 10px;
+  font-size: 12px;
+  font-family: 'Manrope', sans-serif;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+  background: #fff;
+}
+
+.phone-mockup-note {
+  font-size: 10px;
+  color: var(--warn);
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+/* comparison */
+.comp-wrap { margin-bottom: 28px; }
+
+.diff-pos { color: #1A7A4A; font-weight: 700; }
+.diff-neg { color: var(--alert); font-weight: 700; }
+.diff-na  { color: var(--ink-3); font-style: italic; }
+
+/* reco */
+.reco-wrap {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 22px 26px;
+}
+
+.reco-wrap h3 {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--purple); margin-bottom: 14px;
+}
+
+.reco-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+
+.reco-list li {
+  display: flex; gap: 11px; font-size: 12.5px;
+  color: var(--ink-2); line-height: 1.6; align-items: flex-start;
+}
+
+.reco-list li strong { color: var(--ink); }
+
+.rn {
+  flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--purple); color: #fff; font-size: 10px;
+  font-weight: 800; display: flex; align-items: center;
+  justify-content: center; margin-top: 1px;
+}
+
+@media print {
+  body { background: #fff; }
+  .sheet { box-shadow: none; }
+  .sheet + .sheet { page-break-before: always; margin-top: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ SHEET 1 ══════════════ -->
+<div class="sheet">
+  <div class="top-bar">
+    <div>
+      <div class="report-eyebrow">Marketing con Melissa</div>
+      <div class="report-title">Contactos por País</div>
+      <div class="report-sub">Distribución real de la base · Campaña 2025</div>
+    </div>
+    <div class="total-block">
+      <div class="big">51,562</div>
+      <div class="lbl">Total contactos</div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    Distribución por país del número de contactos con teléfono registrado.
+  </div>
+
+  <div class="section-title">Distribución por país — mayor a menor</div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:26px">#</th>
+        <th>País</th>
+        <th class="r">Contactos</th>
+        <th class="r" style="padding-right:10px">% del total</th>
+      </tr>
+    </thead>
+    <tbody id="tbody1"></tbody>
+  </table>
+
+  <div class="footer">
+    <span>Marketing con Melissa · Reporte interno</span>
+    <span>Base total verificada: 51,562 registros</span>
+  </div>
+</div>
+
+<!-- ══════════════ SHEET 2 ══════════════ -->
+<div class="sheet">
+  <div class="top-bar">
+    <div>
+      <div class="report-eyebrow">Marketing con Melissa</div>
+      <div class="report-title">Hallazgos Clave & Recomendaciones</div>
+      <div class="report-sub">Planeación de créditos para próximas campañas</div>
+    </div>
+    <div class="total-block">
+      <div class="big" style="font-size:26px;color:var(--ink-2)">2 alertas</div>
+      <div class="lbl">a resolver</div>
+    </div>
+  </div>
+
+  <!-- Alerta 1 -->
+  <div class="alert-block">
+    <div class="tag">⚠ Alerta 1 — Gap crítico</div>
+    <div class="headline">Argentina no estaba en el plan de campaña</div>
+    <div class="big-num-alert">4,445 contactos · 8.6%</div>
+    <div class="body">Argentina es el <strong>2.° país más grande de la base</strong>, pero no se le asignaron créditos en la proyección. Se perdió la oportunidad de impactar este mercado por completo.</div>
+  </div>
+
+  <!-- Alerta 2 con mockup -->
+  <div class="warn-block">
+    <div class="warn-inner">
+      <div class="tag">⚠ Alerta 2 — Datos sin validar</div>
+      <div class="headline">7,721 contactos sin país identificado</div>
+      <div class="big-num-warn">7,721 contactos · 15%</div>
+      <div class="body">
+        La causa raíz: el formulario de registro <strong>no obliga a seleccionar el código de país</strong> al ingresar el teléfono.
+        <br><br>
+        <strong>Solución técnica:</strong> Hacer obligatorio el selector de código de país en el campo de teléfono (ver ejemplo →). Sin este campo, cada campaña seguirá acumulando contactos no segmentables.
+      </div>
+    </div>
+    <div class="phone-mockup-wrap">
+      <div class="phone-mockup">
+        <div class="phone-mockup-label">Campo requerido</div>
+        <div class="phone-input-row">
+          <div class="flag-select">🇲🇽 +52 <span class="chevron">▾</span></div>
+          <div class="phone-digits">55 1234 5678</div>
+        </div>
+        <div class="phone-mockup-note">* Código de país obligatorio</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plan vs realidad -->
+  <div class="section-title" style="margin-bottom:10px">Plan de campaña vs. realidad</div>
+  <div class="comp-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>País</th>
+          <th class="r">Créditos plan</th>
+          <th class="r">Contactos reales</th>
+          <th class="r">% Real</th>
+          <th class="r">Diferencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="cname"><span class="flag">🇲🇽</span>México</div></td>
+          <td style="text-align:right;font-size:12px">70% · 33,950</td>
+          <td style="text-align:right;font-size:15px;font-weight:700">24,755</td>
+          <td style="text-align:right;font-weight:700">48.0%</td>
+          <td style="text-align:right" class="diff-neg">−22 pts</td>
+        </tr>
+        <tr>
+          <td><div class="cname"><span class="flag">🇨🇴</span>Colombia</div></td>
+          <td style="text-align:right;font-size:12px">15% · 7,275</td>
+          <td style="text-align:right;font-size:15px;font-weight:700">3,941</td>
+          <td style="text-align:right;font-weight:700">7.6%</td>
+          <td style="text-align:right" class="diff-neg">−7 pts</td>
+        </tr>
+        <tr>
+          <td><div class="cname"><span class="flag">🇵🇪</span><span class="flag">🇪🇨</span>Perú + Ecuador</div></td>
+          <td style="text-align:right;font-size:12px">10% · 4,850</td>
+          <td style="text-align:right;font-size:15px;font-weight:700">6,970</td>
+          <td style="text-align:right;font-weight:700">13.5%</td>
+          <td style="text-align:right" class="diff-pos">+3.5 pts</td>
+        </tr>
+        <tr style="background:#FFFBEF">
+          <td><div class="cname"><span class="flag">🇦🇷</span>Argentina</div></td>
+          <td style="text-align:right;font-size:12px;color:var(--ink-3);font-style:italic">No mapeado</td>
+          <td style="text-align:right;font-size:15px;font-weight:700;color:#9A6C00">4,445</td>
+          <td style="text-align:right;font-weight:700;color:#9A6C00">8.6%</td>
+          <td style="text-align:right" class="diff-neg">Sin créditos</td>
+        </tr>
+        <tr>
+          <td><div class="cname"><span class="flag">🇺🇸</span>US / Canadá</div></td>
+          <td style="text-align:right;font-size:12px;color:var(--ink-3);font-style:italic">No mapeado</td>
+          <td style="text-align:right;font-size:15px;font-weight:700">1,175</td>
+          <td style="text-align:right;font-weight:700">2.3%</td>
+          <td style="text-align:right" class="diff-neg">Sin créditos</td>
+        </tr>
+        <tr>
+          <td><div class="cname"><span class="flag">🌎</span>Otros países</div></td>
+          <td style="text-align:right;font-size:12px">5% · 2,425</td>
+          <td style="text-align:right;font-size:15px;font-weight:700">3,629</td>
+          <td style="text-align:right;font-weight:700">7.0%</td>
+          <td style="text-align:right" class="diff-pos">+2 pts</td>
+        </tr>
+        <tr>
+          <td><div class="cname"><span class="flag">❓</span>Sin país / Error</div></td>
+          <td style="text-align:right;font-size:12px;color:var(--ink-3);font-style:italic">No considerado</td>
+          <td style="text-align:right;font-size:15px;font-weight:700;color:var(--warn)">7,822</td>
+          <td style="text-align:right;font-weight:700;color:var(--warn)">15.2%</td>
+          <td style="text-align:right" class="diff-na">Pendiente</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Recos -->
+  <div class="reco-wrap">
+    <h3>Recomendaciones para la próxima campaña</h3>
+    <ul class="reco-list">
+      <li><span class="rn">1</span><span><strong>Campo de código de país obligatorio en el formulario de registro.</strong> Es la solución de raíz. Sin este cambio, el 15% seguirá siendo inservible para campañas segmentadas.</span></li>
+      <li><span class="rn">2</span><span><strong>Incluir Argentina en el plan de créditos.</strong> Es el 2.° mercado más grande. Asignar mínimo 8–10% del presupuesto.</span></li>
+      <li><span class="rn">3</span><span><strong>Ajustar México a ~48–60% de créditos</strong> (actualmente 70%). La cifra exacta dependerá de cuántos "desconocidos" sean mexicanos una vez que se limpie la data.</span></li>
+      <li><span class="rn">4</span><span><strong>Asignar créditos a US / Canadá.</strong> Solo 2.3% del total, pero son contactos de alto poder adquisitivo. Considerar una partida pequeña pero dedicada.</span></li>
+      <li><span class="rn">5</span><span><strong>Perú + Ecuador superan la proyección</strong> (13.5% real vs 10% plan). Considerar aumentar su asignación a 12–14%.</span></li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    <span>Marketing con Melissa · Análisis interno</span>
+    <span>Basado en 51,562 registros totales</span>
+  </div>
+</div>
+
+<script>
+const data = [
+  {f:"🇲🇽",n:"México",      c:24755,p:48.01},
+  {f:"🇦🇷",n:"Argentina",   c:4445, p:8.62},
+  {f:"🇨🇴",n:"Colombia",    c:3941, p:7.64},
+  {f:"🇵🇪",n:"Perú",        c:3637, p:7.05},
+  {f:"🇪🇨",n:"Ecuador",     c:3333, p:6.46},
+  {f:"🇧🇷",n:"Brasil",      c:1254, p:2.43},
+  {f:"🇺🇸",n:"US / Canadá", c:1175, p:2.28},
+  {f:"🇨🇱",n:"Chile",       c:352,  p:0.68},
+  {f:"🇻🇪",n:"Venezuela",   c:256,  p:0.50},
+  {f:"🇬🇹",n:"Guatemala",   c:134,  p:0.26},
+  {f:"🇳🇮",n:"Nicaragua",   c:119,  p:0.23},
+  {f:"🇸🇻",n:"El Salvador", c:59,   p:0.11},
+  {f:"🇭🇳",n:"Honduras",    c:80,   p:0.16},
+  {f:"🇨🇷",n:"Costa Rica",  c:54,   p:0.10},
+  {f:"🇵🇦",n:"Panamá",      c:50,   p:0.10},
+  {f:"🇧🇴",n:"Bolivia",     c:33,   p:0.06},
+  {f:"🇵🇾",n:"Paraguay",    c:45,   p:0.09},
+  {f:"🇨🇺",n:"Cuba",        c:11,   p:0.02},
+  {f:"🇺🇾",n:"Uruguay",     c:11,   p:0.02},
+];
+
+data.sort((a,b)=>b.c-a.c);
+
+const special = [
+  {f:"❓",n:"Desconocido",  c:7721, p:14.97},
+  {f:"⚠️",n:"Error (núm.)",c:101,  p:0.20},
+];
+
+const max = 24755;
+const tb = document.getElementById('tbody1');
+
+data.forEach((row,i)=>{
+  const tr = document.createElement('tr');
+  if(row.n==="México") tr.className="r1";
+  else if(row.n==="Argentina") tr.className="arg";
+  const bar = Math.max(2,(row.c/max*100)).toFixed(1);
+  tr.innerHTML=`
+    <td class="rank">${i+1}</td>
+    <td><div class="cname"><span class="flag">${row.f}</span>${row.n}</div></td>
+    <td class="num">${row.c.toLocaleString('es-MX')}</td>
+    <td class="pct-td">
+      <div class="pct-row">
+        <span class="pct-val">${row.p.toFixed(2)}%</span>
+        <div class="bar-bg"><div class="bar-fill" style="width:${bar}%"></div></div>
+      </div>
+    </td>`;
+  tb.appendChild(tr);
+});
+
+const div=document.createElement('tr');
+div.className='sp-divider';
+div.innerHTML='<td colspan="4">Sin clasificar</td>';
+tb.appendChild(div);
+
+special.forEach(r=>{
+  const tr=document.createElement('tr');
+  tr.className='sp';
+  const bar=Math.max(2,(r.c/max*100)).toFixed(1);
+  tr.innerHTML=`
+    <td class="rank">—</td>
+    <td><div class="cname"><span class="flag">${r.f}</span>${r.n}</div></td>
+    <td class="num">${r.c.toLocaleString('es-MX')}</td>
+    <td class="pct-td">
+      <div class="pct-row">
+        <span class="pct-val">${r.p.toFixed(2)}%</span>
+        <div class="bar-bg"><div class="bar-fill" style="width:${bar}%"></div></div>
+      </div>
+    </td>`;
+  tb.appendChild(tr);
+});
+</script>
+</body>
+</html>
